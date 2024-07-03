@@ -12,8 +12,24 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 CORS(app)
 
+initial_members = [
+    {"first_name":"Jhon", "last_name":"Jackson", "age":33, "lucky_numbers":[7,13,22]}, 
+    {"first_name":"Jane", "last_name":"Jackson", "age":33, "lucky_numbers":[10,14,3]},
+    {"first_name":"Jimmy", "last_name":"Jackson", "age":5, "lucky_numbers":[1]}
+]
+
+
 # create the jackson family object
-jackson_family = FamilyStructure("Jackson")
+# Crear la instancia de FamilyStructure con los miembros iniciales
+jackson_family = FamilyStructure(initial_members)
+
+# Verificar los miembros iniciales
+# print("Miembros iniciales:", jackson_family.get_all_members())
+
+
+# for member in initial_members:
+#     jackson_family.add_member(member)
+
 
 # Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
@@ -30,15 +46,11 @@ def handle_hello():
 
     # this is how you can use the Family datastructure by calling its methods
     members = jackson_family.get_all_members()
-    response_body = {
-        "hello": "world",
-        "family": members
-    }
-
-
-    return jsonify(response_body), 200
+    print("memmmmmbersss...", members)
+    return jsonify(members), 200
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=PORT, debug=True)
+
