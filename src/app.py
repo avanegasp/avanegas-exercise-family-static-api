@@ -12,12 +12,6 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 CORS(app)
 
-# initial_members = [
-#     {"first_name":"Jhon", "last_name":"Jackson", "age":33, "lucky_numbers":[7,13,22]},  
-#     {"first_name":"Jimmy", "last_name":"Jackson", "age":5, "lucky_numbers":[1]}
-# ]
-
-
 # create the jackson family object
 # Crear la instancia de FamilyStructure con los miembros iniciales
 jackson_family = FamilyStructure("Jackson")
@@ -31,13 +25,6 @@ jackson_family.add_member(
 jackson_family.add_member(
     {"first_name":"Jimmy", "age":5, "lucky_numbers":[1]}
 )
-# Verificar los miembros iniciales
-# print("Miembros iniciales:", jackson_family.get_all_members())
-
-
-# for member in initial_members:
-#     jackson_family.add_member(member)
-
 
 # Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
@@ -51,7 +38,6 @@ def sitemap():
 
 @app.route('/members', methods=['GET'])
 def handle_hello():
-
     # this is how you can use the Family datastructure by calling its methods
     members = jackson_family.get_all_members()
     # print("memmmmmbersss...", members)
@@ -77,12 +63,19 @@ def create_member():
         "age": age,
         "lucky_numbers": lucky_numbers
     }
-
     if id is not None: 
         member["id"] = id
 
     jackson_family.add_member(member)
     return jsonify(member), 200
+
+
+@app.route('/member/<int:id>', methods=["GET"])
+def get_one_member(id):
+    member = jackson_family.get_member(id)
+    if member:
+        return jsonify(member),200
+    return jsonify({"error": "Miembro no encontrado"}), 400
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
