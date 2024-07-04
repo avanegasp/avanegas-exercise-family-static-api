@@ -12,8 +12,11 @@ class FamilyStructure:
     def __init__(self, members=None):
         self.members = members if members is not None else []
 
-        print("MEMMMMMBERSSSSSS.......", self.members)
-        
+        for member in self.members:
+            if 'id' not in member:
+                member['id'] = self._generateId()
+
+        # print("MEMMMMMBERSSSSSS.......", self.members)
         # example list of members
         # self.members = []
 
@@ -23,7 +26,9 @@ class FamilyStructure:
 
     def add_member(self, member):
         # fill this method and update the return
-        pass
+        if "id" not in member:
+            member["id"] = self._generateId()
+        self.members.append(member)
 
     def delete_member(self, id):
         # fill this method and update the return
@@ -37,6 +42,7 @@ class FamilyStructure:
     def get_all_members(self):
         print("get_all_members", self.members)
         return self.members
+
 
 
 
