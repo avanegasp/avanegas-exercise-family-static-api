@@ -9,12 +9,13 @@ update this file to implement the following already declared methods:
 from random import randint
 
 class FamilyStructure:
-    def __init__(self, members=None):
-        self.members = members if members is not None else []
+    def __init__(self, last_name):
+        self.members = []
+        self.last_name = last_name
 
-        for member in self.members:
-            if 'id' not in member:
-                member['id'] = self._generateId()
+        # for member in self.members:
+        #     if 'id' not in member:
+        #         member['id'] = self._generateId()
 
         # print("MEMMMMMBERSSSSSS.......", self.members)
         # example list of members

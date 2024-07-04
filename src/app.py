@@ -12,17 +12,25 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 CORS(app)
 
-initial_members = [
-    {"first_name":"Jhon", "last_name":"Jackson", "age":33, "lucky_numbers":[7,13,22]}, 
-    {"first_name":"Jane", "last_name":"Jackson", "age":33, "lucky_numbers":[10,14,3]},
-    {"first_name":"Jimmy", "last_name":"Jackson", "age":5, "lucky_numbers":[1]}
-]
+# initial_members = [
+#     {"first_name":"Jhon", "last_name":"Jackson", "age":33, "lucky_numbers":[7,13,22]},  
+#     {"first_name":"Jimmy", "last_name":"Jackson", "age":5, "lucky_numbers":[1]}
+# ]
 
 
 # create the jackson family object
 # Crear la instancia de FamilyStructure con los miembros iniciales
-jackson_family = FamilyStructure(initial_members)
+jackson_family = FamilyStructure("Jackson")
 
+jackson_family.add_member(
+    {"first_name":"Jhon", "age":33, "lucky_numbers":[7,13,22]}
+)
+jackson_family.add_member(
+{"first_name":"Jane", "age":33, "lucky_numbers":[10,14,3]}
+)
+jackson_family.add_member(
+    {"first_name":"Jimmy", "age":5, "lucky_numbers":[1]}
+)
 # Verificar los miembros iniciales
 # print("Miembros iniciales:", jackson_family.get_all_members())
 
@@ -53,15 +61,12 @@ def handle_hello():
 def create_member():
     body = request.get_json()
     first_name = body.get("first_name", None)
-    last_name = body.get("last_name", None)
     age = body.get("age", None)
     lucky_numbers = body.get("lucky_numbers", None)
     id = body.get("id", None)
 
     if first_name is None:
         return jsonify({"error": "El first_name es requerido"}), 400
-    if last_name is None:
-        return jsonify({"error": "El last_name es requerido"}), 400
     if age is None:
         return jsonify({"error": "El age es requerido"}), 400
     if lucky_numbers is None:
@@ -69,16 +74,15 @@ def create_member():
     
     member = {
         "first_name": first_name, 
-        "last_name": last_name,
         "age": age,
         "lucky_numbers": lucky_numbers
     }
-    
+
     if id is not None: 
         member["id"] = id
 
     jackson_family.add_member(member)
-    return jsonify(member), 201
+    return jsonify(member), 200
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
